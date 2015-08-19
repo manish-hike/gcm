@@ -40,6 +40,7 @@ import java.util.Map;
  *    .delayWhileIdle(true)
  *    .dryRun(true)
  *    .restrictedPackageName(restrictedPackageName)
+ *    .priority(priority)
  *    .build();
  * </pre></code>
  *
@@ -51,6 +52,7 @@ import java.util.Map;
  *    .delayWhileIdle(true)
  *    .dryRun(true)
  *    .restrictedPackageName(restrictedPackageName)
+ *    .priority(priority)
  *    .addData("key1", "value1")
  *    .addData("key2", "value2")
  *    .build();
@@ -64,6 +66,7 @@ public final class Message implements Serializable {
   private final Map<String, String> data;
   private final Boolean dryRun;
   private final String restrictedPackageName;
+  private final String priority;
 
   public static final class Builder {
 
@@ -75,6 +78,7 @@ public final class Message implements Serializable {
     private Integer timeToLive;
     private Boolean dryRun;
     private String restrictedPackageName;
+    private String priority;
 
     public Builder() {
       this.data = new LinkedHashMap<String, String>();
@@ -127,7 +131,15 @@ public final class Message implements Serializable {
       restrictedPackageName = value;
       return this;
     }
-
+    
+    /**
+     * Sets the priority property.
+     */
+    public Builder priority(String value) {
+      priority = value;
+      return this;
+    }
+    
     public Message build() {
       return new Message(this);
     }
@@ -141,6 +153,7 @@ public final class Message implements Serializable {
     timeToLive = builder.timeToLive;
     dryRun = builder.dryRun;
     restrictedPackageName = builder.restrictedPackageName;
+    priority = builder.priority;
   }
 
   /**
@@ -185,6 +198,13 @@ public final class Message implements Serializable {
     return data;
   }
 
+  /**
+   * Gets the messages priority.
+   */
+  public String getPriority() {
+    return priority;
+  }
+  
   @Override
   public String toString() {
     StringBuilder builder = new StringBuilder("Message(");
@@ -202,6 +222,9 @@ public final class Message implements Serializable {
     }
     if (restrictedPackageName != null) {
       builder.append("restrictedPackageName=").append(restrictedPackageName).append(", ");
+    }
+    if (priority != null) {
+      builder.append("priority=").append(priority).append(", ");
     }
     if (!data.isEmpty()) {
       builder.append("data: {");
